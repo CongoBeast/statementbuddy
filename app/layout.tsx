@@ -23,7 +23,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
           {/* Navbar for small/medium screens */}
           <Navbar />
           {/* Main content */}
-          <main className="p-5">{children}</main>
+          <main>{children}</main>
         </div>
       </body>
     </html>
