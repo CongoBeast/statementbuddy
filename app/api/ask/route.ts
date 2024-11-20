@@ -1,13 +1,11 @@
-import { NextResponse } from "next/server";
-import OpenAI from "openai";
+import { NextResponse } from 'next/server';
+import OpenAI from 'openai'; // Assuming you are using OpenAI's SDK
 
-
-// Initialize the OpenAI client
+// Initialize OpenAI API client
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Replace with your OpenAI API Key if not using env
+  apiKey: process.env.OPENAI_API_KEY, // Use environment variable for API key
 });
 
-// Define the POST request handler
 export async function POST() {
   try {
     // Create a test completion request
@@ -27,11 +25,20 @@ export async function POST() {
 
     // Return the result as JSON
     return NextResponse.json({ result });
-  } catch (error) {
-    console.error("Error connecting to OpenAI:", error);
-    return NextResponse.json(
-      { error: "Failed to connect to OpenAI", details: error.message },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    // Type the error object properly
+    if (error instanceof Error) {
+      console.error("Error connecting to OpenAI:", error.message);
+      return NextResponse.json(
+        { error: "Failed to connect to OpenAI", details: error.message },
+        { status: 500 }
+      );
+    } else {
+      console.error("An unknown error occurred:", error);
+      return NextResponse.json(
+        { error: "An unknown error occurred", details: String(error) },
+        { status: 500 }
+      );
+    }
   }
 }
